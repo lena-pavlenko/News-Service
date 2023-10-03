@@ -7,7 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@material-design-icons/font": "^0.14.13",
     "core-js": "^3.8.3",
+    "materialize-css": "^1.0.0-rc.2",
     "vue": "^3.2.13"
   },
   "devDependencies": {
