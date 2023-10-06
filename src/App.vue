@@ -89,7 +89,7 @@
                 }
                 try {
                     this.isPostLoading = true
-                    const response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey=76b62c80d3ba4eb4a5da9a07cc2c1074`)
+                    const response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey==YOUR_KEY`)
 
                     if (Math.floor(response.status / 100) !== 2) {
                         console.log(`Error: Response status = ${response.status}`)
