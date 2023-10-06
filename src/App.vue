@@ -16,22 +16,9 @@
                 <div class="row">
                     <div class="col s12 m6">
                         <div class="card">
-                            <form name="newsControls">
-                                <div class="card-content">
-                                    <span class="card-title">Search news</span>
-                                    <div class="input-field">
-                                        <input type="text" id="autocomplete-input" class="autocomplete" name="search" />
-                                        <label for="autocomplete-input">Поиск по всем новостям</label>
-                                    </div>
-                                </div>
-                                <div class="card-action">
-                                    <button class="btn waves-effect waves-light light-blue darken-4" type="submit"
-                                        name="action">
-                                        Search
-                                        <i class="material-icons right">search</i>
-                                    </button>
-                                </div>
-                            </form>
+                            <search-form
+                                @search="searchNews"
+                            />
                         </div>
                     </div>
                 </div>
@@ -59,24 +46,26 @@
     import axios from 'axios'
 
     import ArticleList from '@/components/ArticleList'
+    import SearchForm from './components/SearchForm.vue';
     
     export default {
         components: {
-            ArticleList
+            ArticleList,
+            SearchForm
         },
 
         data() {
             return {
                 articles: [],
-                isPostLoading: false
+                isPostLoading: false,
             }
         },
 
         methods: {
-            async getData() {
+            async getHeadlines() {
                 try {
                     this.isPostLoading = true
-                    const response = await axios.get(`https://newsapi.org/v2//top-headlines?country=us&category=entertainment&apiKey=YOURAPIKEY`)
+                    const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=ru&apiKey=YOUR_KEY`)
 
                     if (Math.floor(response.status / 100) !== 2) {
                         console.log(`Error: Response status = ${response.status}`)
@@ -91,14 +80,42 @@
                 } finally {
                     this.isPostLoading = false
                 }
-            }
+            },
+
+            async getEverything(query) {
+                if (typeof query === 'undefined' || query === '') {
+                    console.log('Введите что-нибудь');
+                    return
+                }
+                try {
+                    this.isPostLoading = true
+                    const response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey=76b62c80d3ba4eb4a5da9a07cc2c1074`)
+
+                    if (Math.floor(response.status / 100) !== 2) {
+                        console.log(`Error: Response status = ${response.status}`)
+                        return
+                    }
+                    
+                    if (!response.data.articles.length) return
+                    
+                    this.articles = response.data.articles
+
+                } catch (error) {
+                    console.log(`Error: ${error}`)
+                } finally {
+                    this.isPostLoading = false
+                }
+            },
+
+            searchNews(searchQuery) {
+                this.getEverything(searchQuery)
+                console.log(searchQuery);
+            },
         },
         mounted() {
             M.AutoInit();
 
-            this.getData()
-
-            
+            this.getHeadlines()
         },
     }
 </script>
@@ -113,35 +130,6 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             grid-auto-flow: dense;
             row-gap: 20px;
-        }
-
-        .card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-
-            &-content {
-                flex-grow: 1;
-            }
-
-            &-image {
-                width: clamp(150px, 100%, 100%);
-                aspect-ratio: 300/200;
-                margin: 0 auto;
-
-                img{
-                    height: 100%;
-                    object-fit: cover;
-                }
-            }
-
-            &-title {
-                background: rgb(1, 87, 155, 0.7);
-                display: block;
-                width: 100%;
-                color: #fff;
-                padding: 20px;
-            }
         }
     }
 
