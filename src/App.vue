@@ -30,7 +30,6 @@
                     :articles="articles"
                     v-if="!isPostLoading"
                 />
-                
                 <div class="loading-banner" v-else>
                     <div class="lds-dual-ring"></div>
                 </div>
@@ -67,7 +66,7 @@
                 try {
                     this.isPostLoading = true
                     if (!isSearching) {
-                        response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_API_KEY`)
+                        response = await axios.get(`https://newsapi.org/v2/top-headlines?country=ru&apiKey=YOUR_API_KEY`)
                     } else {
                         if (query === '') {
                             this.showMessage('Введите что-нибудь', 'error-msg')
