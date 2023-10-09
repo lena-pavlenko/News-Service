@@ -62,60 +62,56 @@
         },
 
         methods: {
-            async getHeadlines() {
+            async getNews(isSearching = false, query = '') {
+                let response = {}
                 try {
                     this.isPostLoading = true
-                    const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=ru&apiKey=YOUR_KEY`)
-
+                    if (!isSearching) {
+                        response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_API_KEY`)
+                    } else {
+                        if (query === '') {
+                            this.showMessage('Введите что-нибудь', 'error-msg')
+                            return
+                        }
+                        response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey=YOUR_API_KEY`)
+                    }
+                    
                     if (Math.floor(response.status / 100) !== 2) {
                         console.log(`Error: Response status = ${response.status}`)
                         return
                     }
-                    if (!response.data.articles.length) return
+                    if (!response.data.articles.length) {
+                        this.showMessage('Ничего не найдено', 'msg-error')
+                        return
+                    }
                     
                     this.articles = response.data.articles
 
                 } catch (error) {
                     console.log(`Error: ${error}`)
+                    this.showMessage('Возникла ошибка', 'msg-error')
                 } finally {
                     this.isPostLoading = false
                 }
             },
 
-            async getEverything(query) {
-                if (typeof query === 'undefined' || query === '') {
-                    console.log('Введите что-нибудь');
-                    return
-                }
-                try {
-                    this.isPostLoading = true
-                    const response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey==YOUR_KEY`)
-
-                    if (Math.floor(response.status / 100) !== 2) {
-                        console.log(`Error: Response status = ${response.status}`)
-                        return
+            showMessage(msg, type = 'success') {
+                M.toast(
+                    {
+                        html: msg,
+                        classes: type
                     }
-                    
-                    if (!response.data.articles.length) return
-                    
-                    this.articles = response.data.articles
-
-                } catch (error) {
-                    console.log(`Error: ${error}`)
-                } finally {
-                    this.isPostLoading = false
-                }
+                )
             },
 
             searchNews(searchQuery) {
-                this.getEverything(searchQuery)
-                console.log(searchQuery);
+                this.getNews(true, searchQuery)
             },
         },
         mounted() {
             M.AutoInit();
 
-            this.getHeadlines()
+            this.getNews()
         },
     }
 </script>
