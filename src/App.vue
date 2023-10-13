@@ -45,7 +45,7 @@
     import axios from 'axios'
 
     import ArticleList from '@/components/ArticleList'
-    import SearchForm from './components/SearchForm.vue';
+    import SearchForm from '@/components/SearchForm';
     
     export default {
         components: {
