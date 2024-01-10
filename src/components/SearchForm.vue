@@ -33,13 +33,6 @@
                 searchQuery: ''
             }
         },
-
-        // methods: {
-        //     searchNews() {
-        //         this.$emit('search'. this.searchQuery)
-        //         console.log(this.searchQuery);
-        //     }
-        // }
     }
 </script>
 
