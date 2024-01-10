@@ -11,7 +11,7 @@
                 <p>{{ article.description || 'No description' }}</p>
             </div>
             <div class="card-action">
-                <a :href="article.url || ''" class="light-blue-text text-darken-3" target="_blank">This is a link</a>
+                <a :href="article.url || ''" class="light-blue-text text-darken-3" target="_blank">Read more</a>
             </div>
         </div>
     </div>
