@@ -43,10 +43,6 @@ npm run build
 const response = await axios.get(`https://newsapi.org/v2/top-headlines?country=us&apiKey=YOUR_API_KEY`)
 ```
 
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
 ## Контакты
 
 [Елена Павленко](https://t.me/lenapavlenko) — Frontend Developer
